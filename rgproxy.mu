@@ -39,12 +39,13 @@ def onReceive(message):
             master_path = parsed.path
             master_query = parsed.query
             home = master_netloc
-            print ("`B595 `!`[<"+master_netloc+">`:/page/rgproxy.mu`resultat="+master_netloc+"]`b`` "+url)
+            print ("`B595 `!`["+master_netloc+"`:/page/rgproxy.mu`resultat="+master_netloc+"]`b`` "+url)
             print ("---")
             if response.is_a(ignition.SuccessResponse):
                 text = (response.data())
                 tosend = text.split("\n")
                 for index, line in enumerate(tosend):
+
                     #line = line.replace("`","'")
                     if line[:3] == "```" :
                          line = "`="
@@ -124,12 +125,13 @@ def onReceive(message):
 
                     else :
                         line = line.replace("`","'")
-
                     print (line)
 
 
             elif response.is_a(ignition.InputResponse):
-                print(f"Needs additional input: {response.data()}")
+                print ("Needs additional input: ")
+                print ()
+                print (f'{response.data()} `B444`<30|user_input`>`b  `!`B500`[Submit`:/page/rgproxy.mu`resultat='+url+'|user_input]`b')
 
             elif response.is_a(ignition.RedirectResponse):
                 print(f"Received response, redirect to: {response.data()}")
@@ -159,42 +161,49 @@ def onReceive(message):
 if environ.get("var_backurl") != None :
     backurl =  str(environ.get("var_backurl"))
 
-print ("> Gemini Proxy          `F919 Beta Version, under construction no input or certificate`f")
+print ("> Gemini Proxy          `F919 Beta Version, under construction no certificate and somes bugs`f")
 #print (" `F919 Beta Version, under construction`f")
 print ("")
-print ('Input gemini link `B444gemini://`<30|user_input`>`b  `!`B500`[Submit`:/page/rgproxy.mu`user_input]`b')
+print ('Input gemini link or search term `B500gemini://`B444`<30|user_input`>`b  `!`B500`[Go to link`:/page/rgproxy.mu`user_input]`b or `!`B505`[Search`:/page/rgproxy.mu`resultat=kennedy.gemi.dev/search|user_input]`b')
 print ("")
-print ("`B559`!`[<Main menu>`:/page/index.mu]`b `B329`!`[<Proxy Menu>`:/page/rgproxy.mu`resultat=]`b  `B659`!`[<Back>`:/page/rgproxy.mu`resultat="+backurl+"]`b")
+print ("`B559`!`[Main menu`:/page/index.mu]`b `B329`!`[Proxy Menu`:/page/rgproxy.mu`resultat=]`b  `B128`!`[Search Engine`:/page/rgproxy.mu`resultat=kennedy.gemi.dev]`b  `B659`!`[Back`:/page/rgproxy.mu`resultat="+backurl+"]`b")
 print ("")
-if environ.get("field_user_input") != None:
+
+if environ.get("field_user_input") != None and environ.get("var_resultat") != None:
+        os.environ['var_resultat'] =  environ.get("var_resultat")+"?"+environ.get("field_user_input")
+
+
+if environ.get("field_user_input") != None and environ.get("var_resultat") == None:
         os.environ['var_resultat'] =  environ.get("field_user_input")
 
-if   environ.get("var_resultat") is None or environ.get("var_resultat") is "":
+if   environ.get("var_resultat") == None or environ.get("var_resultat") == "":
         #print (os.environ)    
         #print (environ.get("var_resultat"))
         print ('>> Bookmarks')
         print ("")
         print ("")
-        print  ('`!`[<Techrights>`:/page/rgproxy.mu`resultat=gemini.techrights.org]')
+        print  ('`!`[Gemi.dev`:/page/rgproxy.mu`resultat=gemi.dev]')
         print ("")
-        print  ('`!`[<GeminiSpace>`:/page/rgproxy.mu`resultat=bbs.geminispace.org]')
+        print  ('`!`[Techrights`:/page/rgproxy.mu`resultat=gemini.techrights.org]')
         print ("")
-        print  ('`!`[<Tilde.team>`:/page/rgproxy.mu`resultat=tilde.team/]')
+        print  ('`!`[GeminiSpace`:/page/rgproxy.mu`resultat=bbs.geminispace.org]')
         print ("")
-        print  ('`!`[<mozz.us>`:/page/rgproxy.mu`resultat=mozz.us]')
+        print  ('`!`[Tilde.team`:/page/rgproxy.mu`resultat=tilde.team/]')
         print ("")
-        print  ('`!`[<Yesterweb>`:/page/rgproxy.mu`resultat=cities.yesterweb.org]')
+        print  ('`!`[mozz.us`:/page/rgproxy.mu`resultat=mozz.us]')
         print ("")
-        print  ('`!`[<Hyperreal>`:/page/rgproxy.mu`resultat=hyperreal.coffee]')
+        print  ('`!`[Yesterweb`:/page/rgproxy.mu`resultat=cities.yesterweb.org]')
         print ("")
-        print  ('`!`[<My Plant at Astrobotany>`:/page/rgproxy.mu`resultat=astrobotany.mozz.us/public/d21632c653e546f2aa6a620b848839b9]')
+        print  ('`!`[Hyperreal`:/page/rgproxy.mu`resultat=hyperreal.coffee]')
+        print ("")
+        print  ('`!`[My Plant at Astrobotany`:/page/rgproxy.mu`resultat=astrobotany.mozz.us/public/d21632c653e546f2aa6a620b848839b9]')
         print ("")
         print (">> Games")
         print ("")
         print ("")
-        print  ('`!`[<Underground Kingdom>`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa/underground]')
+        print  ('`!`[Underground Kingdom`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa/underground]')
         print ("")
-        print  ('`!`[<Secret of Pyramids>`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa2/pyramid.gemini]')
+        print  ('`!`[Secret of Pyramids`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa2/pyramid.gemini]')
 
 
 else :
