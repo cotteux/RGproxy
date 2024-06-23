@@ -12,9 +12,8 @@ Nomadnet page to navigate to the Gemini Protocol with this simple proxy
 - Url bar and button
 - No config
 - Links and games add to the list.
-
+- Input functionnality for gemini search and form.
 
 ## To Do
-- add input function for form in gemini
 - add certificate
 - correct some structure of the link sometime bug.
