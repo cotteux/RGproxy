@@ -38,7 +38,7 @@ def onReceive(message):
             master_scheme = parsed.scheme
             master_netloc = parsed.netloc
             master_spath1 = parsed.path
-            master_spath = master_spath1.split("/" or "\r")
+            master_spath = master_spath1.split("/" or "\n")
             #print (master_spath)
             for  spath in master_spath :
                 if ".gmi" not in spath and spath != "" and ".gemini" not in spath:
@@ -77,10 +77,10 @@ def onReceive(message):
                             showlink = line_part[0]
                         else :
                             showlink = line_part[1]
+                            showlink = showlink.replace("[","{")
+                            showlink = showlink.replace("]","}")
                         #print (requested_url)
 
-                        #if "://" not in requested_url:
-                        #    requested_url = "gemini://" + requested_url
                         parsed =  urllib.parse.urlparse(requested_url)
                         #print ("==="+showlink)
                         request_scheme = parsed.scheme
@@ -89,7 +89,7 @@ def onReceive(message):
                         request_query = parsed.query
                         if request_scheme =="gemini" or request_scheme =="" :
                             #print (parsed)
-                            #print (line)
+                            #print (showlink)
 
 
                             if request_path[:2] == "//" :
@@ -128,7 +128,7 @@ def onReceive(message):
                             elif request_netloc =="." or (symbol =="/" and request_netloc==""):
                                 line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             elif request_netloc ==""  :
-                                line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
+                                line = "`F039`[`"+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             else :
                                 line = "`F099`["+showlink+"`:/page/rgproxy.mu`resultat="+request_netloc+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             #print (line_part[0])
