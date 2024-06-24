@@ -53,6 +53,7 @@ def onReceive(message):
             print ("---")
             if response.is_a(ignition.SuccessResponse):
                 text = (response.data())
+                text = text.replace("\t"," ")
                 tosend = text.split("\n")
                 for index, line in enumerate(tosend):
 
@@ -143,7 +144,8 @@ def onReceive(message):
             elif response.is_a(ignition.InputResponse):
                 print ("Needs additional input: ")
                 print ()
-                print (f'{response.data()} `B444`<30|user_input`>`b  `!`B500`[Submit`:/page/rgproxy.mu`resultat='+url+'|user_input]`b')
+                print (f'{response.data()} ')
+                print('`B444`<30|user_input`>`b  `!`B605`[Submit`:/page/rgproxy.mu`resultat='+url+'|user_input]`b')
 
             elif response.is_a(ignition.RedirectResponse):
                 print(f"Received response, redirect to: {response.data()}")
