@@ -43,7 +43,7 @@ def onReceive(message):
             for  spath in master_spath :
                 if ".gmi" not in spath and spath != "" and ".gemini" not in spath:
                     master_path = master_path +"/" + spath 
-                    print (master_path)
+                    #print (master_path)
  
             #master_path = parsed.path
             
