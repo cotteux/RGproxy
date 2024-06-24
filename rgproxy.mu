@@ -30,13 +30,23 @@ def onReceive(message):
                 url = message[9:]
             else :
                 url = message
-            
+            master_path = ""
+            master_spath = ""
             response = ignition.request("gemini://"+url)
             parsed =  urllib.parse.urlparse("gemini://"+url)
 
             master_scheme = parsed.scheme
             master_netloc = parsed.netloc
-            master_path = parsed.path
+            master_spath1 = parsed.path
+            master_spath = master_spath1.split("/" or "\r")
+            #print (master_spath)
+            for  spath in master_spath :
+                if ".gmi" not in spath and spath != "" and ".gemini" not in spath:
+                    master_path = master_path +"/" + spath 
+                    print (master_path)
+ 
+            #master_path = parsed.path
+            
             master_query = parsed.query
             home = master_netloc
             print ("`B595 `!`["+master_netloc+"`:/page/rgproxy.mu`resultat="+master_netloc+"]`b`` "+url)
@@ -106,17 +116,19 @@ def onReceive(message):
                                symbol ="/"
                             else :
                                symbol = ""
+                               if request_netloc =="":
+                                   request_netloc=".."
                             if request_query !="" :
                                symbol2 ="?"
                             else :
                                symbol2 = ""
  
                             if request_netloc =="..":
-                                line = "`F089`["+showlink+"`:/page/rgproxy.mu`resultat="+home+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
+                                line = "`F089`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             elif request_netloc =="." or (symbol =="/" and request_netloc==""):
-                                line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+url.rstrip("/")+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
+                                line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             elif request_netloc ==""  :
-                                line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
+                                line = "`F039`["+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             else :
                                 line = "`F099`["+showlink+"`:/page/rgproxy.mu`resultat="+request_netloc+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             #print (line_part[0])
