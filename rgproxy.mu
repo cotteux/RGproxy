@@ -39,21 +39,20 @@ def onReceive(message):
             master_netloc = parsed.netloc
             master_spath1 = parsed.path
             master_spath = master_spath1.split("/" or "\n")
-            #print (master_spath)
+            
             for  spath in master_spath :
                 if ".gmi" not in spath and spath != "" and ".gemini" not in spath:
                     master_path = master_path +"/" + spath 
-                    #print (master_path)
- 
-            #master_path = parsed.path
-            
+
             master_query = parsed.query
             home = master_netloc
-            print ("`B595 `!`["+master_netloc+"`:/page/rgproxy.mu`resultat="+master_netloc+"]`b`` "+url)
-            print ("---")
+
             if response.is_a(ignition.SuccessResponse):
+                print ("`B595 `!`["+master_netloc+"`:/page/rgproxy.mu`resultat="+master_netloc+"]`b`` "+url)
+                print ("---")
                 text = (response.data())
                 text = text.replace("\t"," ")
+                text = text.replace("\r","")
                 tosend = text.split("\n")
                 for index, line in enumerate(tosend):
 
@@ -132,7 +131,9 @@ def onReceive(message):
                                 line = "`F039`[`"+showlink+"`:/page/rgproxy.mu`resultat="+home.rstrip("/")+master_path+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
                             else :
                                 line = "`F099`["+showlink+"`:/page/rgproxy.mu`resultat="+request_netloc+symbol+request_path+symbol2+request_query+"|backurl="+url+"]`f``"
-                            #print (line_part[0])
+                           
+                        elif request_scheme =="http" or request_scheme =="https" or request_scheme =="gopher" or request_scheme =="spartan":
+                            line = request_scheme+"://"+request_netloc+request_path
                         else :
                             line = "`F669 Unusable link `f "
 
@@ -155,9 +156,8 @@ def onReceive(message):
                 else :
                     hurl = url.split("/")
                     home = hurl[0]
-                    print(home)
                     redirect = home+response.data()
-                print (redirect)
+                
             elif response.is_a(ignition.TempFailureResponse):
                 print(f"Error from server: {response.data()}")
 
@@ -169,6 +169,7 @@ def onReceive(message):
 
             elif response.is_a(ignition.ErrorResponse):
                 print(f"There was an error on the request: {response.data()}")
+                
     except KeyError as e:
         print(f"Error processing packet: {e}")
 
@@ -176,7 +177,6 @@ if environ.get("var_backurl") != None :
     backurl =  str(environ.get("var_backurl"))
 
 print ("> Gemini Proxy          `F919 Beta Version, under construction no certificate and somes bugs`f")
-#print (" `F919 Beta Version, under construction`f")
 print ("")
 print ('Input gemini link or search term `B500gemini://`B444`<30|user_input`>`b  `!`B500`[Go to link`:/page/rgproxy.mu`user_input]`b or `!`B505`[Search`:/page/rgproxy.mu`resultat=kennedy.gemi.dev/search|user_input]`b')
 print ("")
@@ -191,10 +191,8 @@ if environ.get("field_user_input") != None and environ.get("var_resultat") == No
         os.environ['var_resultat'] =  environ.get("field_user_input")
 
 if   environ.get("var_resultat") == None or environ.get("var_resultat") == "":
-        #print (os.environ)    
-        #print (environ.get("var_resultat"))
+      
         print ('>> Bookmarks')
-        print ("")
         print ("")
         print  ('`!`[Gemi.dev`:/page/rgproxy.mu`resultat=gemi.dev]')
         print ("")
@@ -218,14 +216,16 @@ if   environ.get("var_resultat") == None or environ.get("var_resultat") == "":
         print  ('`!`[Underground Kingdom`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa/underground]')
         print ("")
         print  ('`!`[Secret of Pyramids`:/page/rgproxy.mu`resultat=typed-hole.org/cyoa2/pyramid.gemini]')
+        print ("")
+        print ('`!`[Twisty Puzzles (5 interactive puzzles)`:/page/rgproxy.mu`resultat=jsreed5.org/twisty/index.gmi]')
 
 
 else :
         #print (environ.get("var_resultat"))
         onReceive(environ.get("var_resultat"))
-        print (redirect)
+        #print (redirect)
         if redirect !="" :
             onReceive(redirect)
-            print ("ca marche redirect "+redirect)
+            print ("redirect to "+redirect)
 
         print ("you're on "+environ.get("var_resultat"))
