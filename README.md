@@ -16,4 +16,4 @@ Nomadnet page to navigate to the Gemini Protocol with this simple proxy
 
 ## To Do
 - add certificate
-- Rebuilt how to filter the structure of the link, the current option have issues.
+
