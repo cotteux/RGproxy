@@ -1,10 +1,10 @@
 # RGproxy
-Nomadnet page to navigate to the Gemini Protocol with this simple proxy
+Nomadnet page to navigate to the Gemini and Gopher Protocol with this simple proxy
 
 ## Install
-- copy rgproxy.mu to your nomadnet folder .nomadnet/storage/pages/ 
+- copy rgproxy.mu and gopher.mu to your nomadnet folder .nomadnet/storage/pages/ 
 - add in the config.yaml file
-- don't forget to make it executable with chmod +x rgproxy.mu
+- don't forget to make it executable with chmod +x rgproxy.mu and gopher.mu
 
 ## Features
 - one level back
@@ -14,6 +14,5 @@ Nomadnet page to navigate to the Gemini Protocol with this simple proxy
 - Links and games add to the list.
 - Input functionnality for gemini search and form.
 
-## To Do
-- add certificate
+
 
