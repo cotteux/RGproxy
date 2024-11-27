@@ -15,6 +15,9 @@ def onReceive(message):
     #print(results)
     #print ("1 "+message)
     message = message.replace("^",":")
+    message = message.replace("%3F","?")
+    message = message.replace("%3D","=")
+    message = message.replace("%09","?")
 
     #print ("2 "+message)
 
@@ -26,7 +29,7 @@ def onReceive(message):
         else :
             type = parse[1]
 
-    print (type)
+    #print (type)
     print ("`B595 `!`["+host+"`:/page/gopher.mu`resultat="+host+"]`b`  "+message)
     print ("---")
     if type == '0' or type =='3':
@@ -48,15 +51,24 @@ def onReceive(message):
                 port = ""
             url = item.host+port+'/'+item.type+item.path
             url = url.replace("?","%09")
+            url = url.replace("=","%3D")
+
             #print(item.type)
+            itemtext = item.text.replace("[","(")
+            itemtext = itemtext.replace("]",")")
+            itemtext = itemtext.replace("\t"," ")
+            #print (item.path[4:])
+
             if item.type == '0':
-                print('`B217`!`['+item.text+'`:/page/gopher.mu`resultat='+url+'|backurl='+message+']`b')
-            elif item.type == '1':
-                print('`B166`!`['+item.text+'`:/page/gopher.mu`resultat='+url+'|backurl='+message+']`b')
+                print('`B217`!`['+itemtext+'`:/page/gopher.mu`resultat='+url+'|backurl='+message+']`b')
+            elif item.type == '1' :
+                print('`B166`!`['+itemtext+'`:/page/gopher.mu`resultat='+url+'|backurl='+message+']`b')
+            elif item.type == 'h' and item.path[0:13] == "URL:gemini://" :
+                print('`B303`!`['+itemtext+'`:/page/rgproxy.mu`resultat='+item.path[4:]+'|backurl=gopher://'+message+']`b')
             elif item.type == '7' :
                 print(item.text)
                 print("")
-                print('`B444`<30|user_input`>`b  `!`B605`[Submit`:/page/gopher.mu`resultat='+url+'|user_input]`b')
+                print('`B444`<30|user_input`>`b  `!`B605`[Submit`:/page/gopher.mu`resultat='+url+'|user_input|backurl='+message+']`b')
             else :
                 content = item.text.replace("\t","    ")
                 content = content.replace("\r","")
@@ -82,7 +94,10 @@ print ("")
 print ('Input Gopher link `B500gopher://`B444`<30|user_input`>`b  `!`B500`[Go to link`:/page/gopher.mu`user_input]`b')
 print ("")
 #print ("`B559`!`[Main menu`:/page/index.mu]`b `B329`!`[Proxy Menu`:/page/gopher.mu`resultat=]`b" )
-print ("`B559`!`[Main menu`:/page/index.mu]`b `B329`!`[Proxy Menu`:/page/gopher.mu`resultat=]`b  `B128`!`[Search Engine`:/page/gopher.mu`resultat=gopher.floodgap.com/1/v2/]`b  `B659`!`[Back`:/page/gopher.mu`resultat="+backurl+"]`b")
+if backurl[:9] == "gemini://" :
+        print ("`B559`!`[Main menu`:/page/index.mu]`b `B329`!`[Proxy Menu`:/page/gopher.mu`resultat=]`b  `B128`!`[Search Engine`:/page/gopher.mu`resultat=gopher.floodgap.com/1/v2/]`b  `B659`!`[Back`:/page/rgproxy.mu`resultat="+backurl+"]`b")
+else :
+        print ("`B559`!`[Main menu`:/page/index.mu]`b `B329`!`[Proxy Menu`:/page/gopher.mu`resultat=]`b  `B128`!`[Search Engine`:/page/gopher.mu`resultat=gopher.floodgap.com/1/v2/]`b  `B659`!`[Back`:/page/gopher.mu`resultat="+backurl+"]`b")
 print ("")
 
 if environ.get("field_user_input") != None and environ.get("var_resultat") != None:
@@ -100,15 +115,20 @@ if   environ.get("var_resultat") == None or environ.get("var_resultat") == "":
         print ("")
         print ('`!`[1436.ninja`:/page/gopher.mu`resultat=1436.ninja]')
         print ("")
-        print ('`!`[Infinitely Remote`:/page/gopher.mu`resultat=infinitelyremote.com]')
+        print ('`!`[Gopherpedia`:/page/gopher.mu`resultat=gopherpedia.com]')
         print ("")
         print ('`!`[Floodgap`:/page/gopher.mu`resultat=gopher.floodgap.com]')
         print ("")
 
-
 else :
         url = environ.get("var_resultat")
         urlcorrect=url.replace(":","^")
+        urlcorrect=url.replace("=","%3D")
+        urlcorrect=url.replace(" ","%20")
+        urlcorrect=url.replace("?","%09")
+
+
         onReceive(urlcorrect)
 
         print ("you're on "+url)
+        print (" back link is "+backurl)
