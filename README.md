@@ -8,11 +8,11 @@ Nomadnet page to navigate to the Gemini and Gopher Protocol with this simple pro
 
 ## Features
 - one level back
-- Compatible with almost all Gemini Capsules
+- Compatible with almost all Gemini Capsules and Gopher site
 - Url bar and button
 - No config
 - Links and games add to the list.
 - Input functionnality for gemini search and form.
-
+- interlink between Gopher and Gemini
 
 
