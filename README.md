@@ -13,6 +13,6 @@ Nomadnet page to navigate to the Gemini and Gopher Protocol with this simple pro
 - No config
 - Links and games add to the list.
 - Input functionnality for gemini search and form.
-- interlink between Gopher and Gemini
+- Opening gopher link in Gemini and vice versa
 
 
