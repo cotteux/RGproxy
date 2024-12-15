@@ -3,7 +3,7 @@ Nomadnet page to navigate to the Gemini and Gopher Protocol with this simple pro
 
 ## Install
 - copy rgproxy.mu and gopher.mu to your nomadnet folder .nomadnet/storage/pages/ 
-- add in the config.yaml file
+
 - don't forget to make it executable with chmod +x rgproxy.mu and gopher.mu
 
 ## Features
